@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>A simple map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:10em; bottom:0; width:80%;
+         margin-left: 10em;
+         margin-right:auto;		 
+	   }
+  #map { height: 60%; }
+</style>
+</head>
+<body>
+<h1> Meet for Lunch? </h1>
+<div id='map'></div>
+<p id="demo"></p>
+<script>
+    L.mapbox.accessToken = 'pk.eyJ1Ijoic2Ftd2FscnVzIiwiYSI6IlRWUWVzeTQifQ.Z-JEsIxDfbr7kZI3MjUFBQ';
+    var map = L.mapbox.map('map', 'examples.map-i86nkdio')
+        .setView([51.505, -0.09], 13);
+	var marker = L.marker([51.5, -0.09]).addTo(map);
+	var circle = L.circle([51.508, -0.11], 500, {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5
+        }).addTo(map);
+		
+    marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+    circle.bindPopup("I am a circle.");
+	getLocation();
+	
+    var my_new;
+    map.on('click', function(e){
+	  //alert(e.latlng);
+	  if (my_new) {
+	     //alert('I am there');
+	     map.removeLayer(my_new);
+	  }
+	  my_new = new L.marker(e.latlng).addTo(map);
+	
+	
+	});
+
+    	
+	function getLocation() {
+	    //alert("got to function");
+        if (navigator.geolocation) {
+           navigator.geolocation.getCurrentPosition(showPosition);
+        } else { 
+           x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+	    //alert("got to show position");
+        var marker_me = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+		marker_me.bindPopup("<b>You are here</b><br>I am a popup.").openPopup();
+    }
+</script>
+</body>
+</html>
