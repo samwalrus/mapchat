@@ -1,3 +1,7 @@
+This is a version of a chat server from swi prolog. It has been extended
+to have a map with pins that show where each person who is chatting is.
+Collab map annotation is being added.
+
 # SWI-Prolog based chat server
 
 This repository provides a demonstration for   using  the recently added
