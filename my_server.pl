@@ -41,11 +41,13 @@
 :- use_module(library(http/http_files)).
 :- use_module(library(http/json)).
 :- use_module(library(debug)).
+:- use_module(library(time)).
 
 :- use_module(hub).
 
 :- multifile http:location/3.
 :- dynamic   http:location/3.
+:- dynamic   ids/2.
 http:location(files, '/f', []).
 
 
@@ -794,7 +796,9 @@ my_if(M,_Room,_Message,Client):-
 	%format("~w\n~w\n",[Json,Client]),
 	visitor(Client,Simple_Client,rgb(R,G,B)),
 	_A{type:"marker_loc", lat:Lat, lng:Lng} :< Json,
-	broad_cast_loc_pin(_Room2,Simple_Client,Lat,Lng,R,G,B,_Msg).
+	broad_cast_loc_pin(_Room2,Simple_Client,Lat,Lng,R,G,B,_Msg),
+	my_remove_alarm(Simple_Client),
+	set_alarm(Simple_Client).
 
 my_if(M,_Room,_Message,Client):-
         %trace,
@@ -832,3 +836,22 @@ get_remove(X):-
         retract(simple_user(X)),
 	Y is X+1,
 	assertz(simple_user(Y)).
+
+
+set_alarm(Node_Id):-
+	%trace,
+	alarm(10, fire_alarm(Node_Id), Alarm_Id, [remove(true)]),
+	assertz(ids(Node_Id,Alarm_Id)),
+	format("msg from ~w alarm set~n",[Node_Id, Alarm_Id]).
+
+
+my_remove_alarm(Node_Id):-
+	ids(Node_Id,Alarm_Id),
+	remove_alarm(Alarm_Id),
+	retract(ids(Node_Id,_)).
+
+%If the alarm does not exist do nothing.
+my_remove_alarm(_).
+
+fire_alarm(Node_Id):-
+	format("~w has not reported its location for 10 seconds!",[Node_Id]).
