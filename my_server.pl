@@ -408,6 +408,11 @@ function openWebSocket() {
          my_add_marker(stringdata);
       }
 
+      if(messageParsed.type=="remove_marker"){
+         //console.log("removing marker");
+         my_remove_marker(stringdata);
+      }
+
       if(messageParsed.type=="marker"){
          //alert("got marker");
          my_add_pin(stringdata);
@@ -436,6 +441,17 @@ function my_add_marker(data){
     var hex = rgbToHex(my_var.rgb[0],my_var.rgb[1],my_var.rgb[2])
     var icon = L.MakiMarkers.icon({icon: "zoo", color: hex, size: "m"});
     my_obj[my_var.id] = new L.marker([my_var.LatLng[0],my_var.LatLng[1]],{icon: icon}).addTo(map);
+
+}
+
+function my_remove_marker(data){
+
+    my_var = JSON.parse(data);
+
+    if (my_obj.hasOwnProperty(my_var.id)) {
+
+       map.removeLayer(my_obj[my_var.id]);
+       }
 
 }
 
@@ -765,6 +781,11 @@ send_message(Message):-
 	current_hub(chat,Hub),
 	hub_broadcast(Hub.name,M).
 
+broad_cast_remove_pin(_Room,Id):-
+	format(atom(MsgJson),'{"type":"remove_marker","id":"~w"}',[Id]),
+	send_message(MsgJson).
+
+
 broad_cast_loc_pin(_Room,Id,Lat,Lng,R,G,B,MsgJson):-
 	format(atom(MsgJson),'{"type":"marker_loc","id":"~w", "LatLng":[~w,~w], "rgb":[~w,~w,~w]}',[Id,Lat,Lng,R,G,B]),
 	%format('~w\n',[Msg]),
@@ -841,8 +862,8 @@ get_remove(X):-
 set_alarm(Node_Id):-
 	%trace,
 	alarm(10, fire_alarm(Node_Id), Alarm_Id, [remove(true)]),
-	assertz(ids(Node_Id,Alarm_Id)),
-	format("msg from ~w alarm set~n",[Node_Id, Alarm_Id]).
+	assertz(ids(Node_Id,Alarm_Id)).
+	%format("msg from ~w alarm set~n",[Node_Id, Alarm_Id]).
 
 
 my_remove_alarm(Node_Id):-
@@ -854,4 +875,5 @@ my_remove_alarm(Node_Id):-
 my_remove_alarm(_).
 
 fire_alarm(Node_Id):-
-	format("~w has not reported its location for 10 seconds!",[Node_Id]).
+	%format("~w has not reported its location for 10 seconds!",[Node_Id]),
+	broad_cast_remove_pin(_Room,Node_Id).
