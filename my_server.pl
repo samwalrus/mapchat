@@ -128,56 +128,56 @@ map(_Request):-
 
             %%%%%%%For leafletdraw%%%%%%
             script([type='text/javascript',
-                    src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/Leaflet.draw.js"],[]),
+                    src="f/scripts/Leaflet.draw-master/src/Leaflet.draw.js"],[]),
             script([type='text/javascript',
-		src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Poly.js"],[]),
+		src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Poly.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/Edit.SimpleShape.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.SimpleShape.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Circle.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Circle.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Rectangle.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Rectangle.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Feature.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Feature.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polyline.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polyline.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polygon.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polygon.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.SimpleShape.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.SimpleShape.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Rectangle.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Rectangle.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Circle.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Circle.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Marker.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Marker.js"],[]),
 
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/LatLngUtil.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/LatLngUtil.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/GeometryUtil.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/GeometryUtil.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/LineUtil.Intersect.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/LineUtil.Intersect.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/Polyline.Intersect.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/Polyline.Intersect.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/Polygon.Intersect.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/Polygon.Intersect.js"],[]),
 
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/Control.Draw.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/Control.Draw.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/Tooltip.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/Tooltip.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/Toolbar.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/Toolbar.js"],[]),
 
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/DrawToolbar.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/DrawToolbar.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/EditToolbar.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/EditToolbar.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Edit.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Edit.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Delete.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Delete.js"],[]),
 
 
 
@@ -211,61 +211,61 @@ chat_page(_Request) :-
 		    src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'],[]),
              %%%%%color picker%%%%%%%%%%%
              script([type="text/javascript", src="/f/scripts/jscolor/jscolor.js"],[]),
-             
+
 	     %%%%%%%For leafletdraw%%%%%%
               link([href='f/scripts/Leaflet.draw-master/dist/leaflet.draw.css', rel='stylesheet'],[]),
-            
+
             script([type='text/javascript',
-                    src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/Leaflet.draw.js"],[]),
+                    src="f/scripts/Leaflet.draw-master/src/Leaflet.draw.js"],[]),
             script([type='text/javascript',
-		src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Poly.js"],[]),
+		src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Poly.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/Edit.SimpleShape.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.SimpleShape.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Circle.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Circle.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Rectangle.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Rectangle.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Feature.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Feature.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polyline.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polyline.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polygon.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polygon.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.SimpleShape.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.SimpleShape.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Rectangle.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Rectangle.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Circle.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Circle.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Marker.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Marker.js"],[]),
 
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/LatLngUtil.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/LatLngUtil.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/GeometryUtil.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/GeometryUtil.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/LineUtil.Intersect.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/LineUtil.Intersect.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/Polyline.Intersect.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/Polyline.Intersect.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/ext/Polygon.Intersect.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/ext/Polygon.Intersect.js"],[]),
 
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/Control.Draw.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/Control.Draw.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/Tooltip.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/Tooltip.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/Toolbar.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/Toolbar.js"],[]),
 
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/draw/DrawToolbar.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/draw/DrawToolbar.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/EditToolbar.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/EditToolbar.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Edit.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Edit.js"],[]),
 		script([type='text/javascript',
-			src="http://mylondon.ddns.net/f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Delete.js"],[]),
+			src="f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Delete.js"],[]),
 
 
 
@@ -497,7 +497,7 @@ map_script -->
         fillOpacity: 0.5
         }).addTo(map);
         */
-    
+
     /******************/
     // Initialise the FeatureGroup to store editable layers
 	var drawnItems = new L.FeatureGroup();
@@ -505,20 +505,20 @@ map_script -->
 	// Initialise the draw control and pass it the FeatureGroup of editable layers
 	var drawControl = new L.Control.Draw({
                 edit: {
-        		featureGroup: drawnItems
-    		}
+			featureGroup: drawnItems
+		}
 	});
 	map.addControl(drawControl);
 
 
 
 	map.on('draw:created', function (e) {
-    		var type = e.layerType,
-        	layer = e.layer;
+		var type = e.layerType,
+		layer = e.layer;
                 var objectToSend ={};
                 var latlng;
-    		if (type === 'marker') {
-        		//alert(layer.getLatLng());
+		if (type === 'marker') {
+			//alert(layer.getLatLng());
                         latlng = layer.getLatLng();
                         objectToSend.type = 'marker';
                         objectToSend.lat = latlng.lat;
@@ -527,7 +527,7 @@ map_script -->
                         //alert(jsonObjectToSend);
                         sendChat(jsonObjectToSend);
                         //objectToSend.color = layer.getColor(); //will this work?
-    		}
+		}
 
                 if (type === 'circle'){
                       //alert('circle');
@@ -572,8 +572,8 @@ map_script -->
                       map.addLayer(layer);
                 }
 
-    		// Do whatever else you need to. (save to db, add to map etc)
-    		//map.addLayer(layer);
+		// Do whatever else you need to. (save to db, add to map etc)
+		//map.addLayer(layer);
 	});
     /*****************/
 
