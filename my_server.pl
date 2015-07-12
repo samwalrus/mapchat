@@ -124,7 +124,7 @@ map(_Request):-
 	    meta([charset='utf-8']),
 	    title('Maps'),
 
-	     meta([name='viewport',content='initial-scale=1,maximum-scale=1,user-scalable=no']),
+	    meta([name='viewport',content='initial-scale=1,maximum-scale=1,user-scalable=no']),
 	    script([type='text/javascript',
 		    src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'],[]),
 
@@ -181,12 +181,7 @@ map(_Request):-
 		script([type='text/javascript',
 			src="f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Delete.js"],[]),
 
-
-
             %%%%%%End leafletdraw%%%%%%%
-
-
-
 	    link([href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css', rel='stylesheet'],[]),
              \map_style
             ],
@@ -419,7 +414,7 @@ function openWebSocket() {
       }
 
       if(messageParsed.type=="circle"){
-         //alert("got marker");
+         //alert("got circle");
          my_add_circle(stringdata);
       }
     }
@@ -470,10 +465,12 @@ function my_add_circle(data){
 
     my_var = JSON.parse(data);
     //var hex = rgbToHex(my_var.rgb[0],my_var.rgb[1],my_var.rgb[2])
-    var color = my_var.color;
-    var rad = my_var.rad;
+    var color = '#'+my_var.color;
+    //console.log("color is:");
+    //console.log(color);
+    var rad = my_var.radius;
     //var icon = L.MakiMarkers.icon({icon: "zoo", color: hex, size: "m"});
-    added_circles[my_var.id] = new L.circle([my_var.LatLng[0],my_var.LatLng[1]],rad,{"color":color}).addTo(map);
+    added_circles[my_var.id] = new L.circle([my_var.LatLng[0],my_var.LatLng[1]],rad,{"color":color, "fillOpacity":0.2}).addTo(map);
 
 }
 
@@ -551,12 +548,15 @@ map_script -->
                       //alert('circle');
                       objectToSend.type = 'circle';
                       objectToSend.latlng = layer.getLatLng();
+		      //objectToSend.lat = layer.getLat();
+
                       objectToSend.radius = layer.getRadius();
                       objectToSend.color =  document.getElementById("color").value;;
-                      //objectToSend.fillcolor =  layer.fillcolor();
+                      //objectToSend.fillcolor =  layer.fillcolor(); //work?
                       var jsonObjectToSend = JSON.stringify(objectToSend);
-                      alert(jsonObjectToSend);
-		      map.addLayer(layer);
+		      //alert(jsonObjectToSend);
+		      sendChat(jsonObjectToSend);
+		      //map.addLayer(layer);
                 }
 
 
@@ -798,6 +798,13 @@ broad_cast_pin(_Room,Id,Lat,Lng,R,G,B,MsgJson):-
 	send_message(MsgJson).
 	%hub_broadcast(Room.name, Message).
 
+broad_cast_circle(_Room,Id,Lat,Lng,Color,Radius,MsgJson):-
+	format(atom(MsgJson),'{"type":"circle","id":"~w", "LatLng":[~w,~w], "radius":~w, "color":"~w"}',[Id,Lat,Lng,Radius,Color]),
+	%format('~w\n',[Msg]),
+	send_message(MsgJson).
+	%hub_broadcast(Room.name, Message).
+
+
 broad_cast_msg_as_json(_Room,Id,Msg,R,G,B,MsgJson):-
 	format(atom(MsgJson),'{"type":"msg","id":"~w","msg":"~w","rgb":[~w,~w,~w]}',[Id,Msg,R,G,B]),
 	%format('~w\n',[Msg]),
@@ -816,7 +823,7 @@ my_if(M,_Room,_Message,Client):-
 	%trace,
 	%format("~w\n~w\n",[Json,Client]),
 	visitor(Client,Simple_Client,rgb(R,G,B)),
-	_A{type:"marker_loc", lat:Lat, lng:Lng} :< Json,
+	_A{type:"marker_loc", lat:Lat, lng:Lng} :< Json,!,
 	broad_cast_loc_pin(_Room2,Simple_Client,Lat,Lng,R,G,B,_Msg),
 	my_remove_alarm(Simple_Client),
 	set_alarm(Simple_Client).
@@ -829,19 +836,33 @@ my_if(M,_Room,_Message,Client):-
 	%trace,
 	%format("~w\n~w\n",[Json,Client]),
 	visitor(Client,Simple_Client,rgb(R,G,B)),
-	_A{type:"marker",lat:Lat, lng:Lng} :< Json,
+	_A{type:"marker",lat:Lat, lng:Lng} :< Json,!,
         %format("~w~n",[Json]).
-	broad_cast_pin(_Room2,"test_one",Lat,Lng,10,10,10,_Msg).
+	broad_cast_pin(_Room2,"test_one",Lat,Lng,10,10,10,_MsgJson). %id of broadcast pin is fixed at the moment
+
+
+my_if(M,_Room,_Message,Client):-
+        %trace,
+        string_codes(M,Codes),
+        atom_codes(Atom,Codes),
+	atom_json_dict(Atom,Json,[as(string)]),
+	%trace,
+	%format("~w\n~w\n",[Json,Client]),
+	visitor(Client,Simple_Client,rgb(R,G,B)),
+	_A{type:"circle",latlng:LatLngJson,radius:Radius,color:Color} :< Json,!,
+	_{lat:Lat,lng:Lng} :< LatLngJson,!,
+        %format("~w~n",[Json]).
+	broad_cast_circle(_Room2,"test_c_one",Lat,Lng,Color,Radius,_MsgJson). %id of broadcast circle is fixed at the moment
+
 
 
 my_if(M,Room,Message,Client):-
 	assertz(utterance(Message)),
-
 	string_codes(M,Codes),
         atom_codes(Atom,Codes),
 	atom_json_dict(Atom,Json,[as(string)]),
 	visitor(Client,Simple_Client,rgb(R,G,B)),
-	_A{type:Message_type, msg:Msg} :< Json,
+	_A{type:Message_type, msg:Msg} :< Json,!,
 	format(atom(JsonSend),'{"type":"~w", "msg":"~w", "id":~w, "rgb":[~w,~w,~w]}',
 	       [Message_type, Msg,Simple_Client,R,G,B]),
 	%format('~w',[JsonSend]),
