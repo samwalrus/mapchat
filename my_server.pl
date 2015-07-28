@@ -105,7 +105,7 @@ server(Port) :-
 
 :- http_handler(root(.),    chat_page,      []).
 :- http_handler(root(home),    home_page,      []).
-:- http_handler(root(map), map,[]).
+
 :- http_handler(files(.), http_reply_from_files('assets', []), [prefix]).
 
 
@@ -117,76 +117,6 @@ server(Port) :-
 		    ]),
 		[ id(chat_websocket)
 		]).
-
-map(_Request):-
-	reply_html_page(
-	    [
-	    meta([charset='utf-8']),
-	    title('Maps'),
-
-	    meta([name='viewport',content='initial-scale=1,maximum-scale=1,user-scalable=no']),
-	    script([type='text/javascript',
-		    src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'],[]),
-
-            %%%%%%%For leafletdraw%%%%%%
-            script([type='text/javascript',
-                    src="f/scripts/Leaflet.draw-master/src/Leaflet.draw.js"],[]),
-            script([type='text/javascript',
-		src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Poly.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.SimpleShape.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Circle.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/edit/handler/Edit.Rectangle.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Feature.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polyline.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Polygon.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.SimpleShape.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Rectangle.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Circle.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/draw/handler/Draw.Marker.js"],[]),
-
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/ext/LatLngUtil.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/ext/GeometryUtil.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/ext/LineUtil.Intersect.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/ext/Polyline.Intersect.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/ext/Polygon.Intersect.js"],[]),
-
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/Control.Draw.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/Tooltip.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/Toolbar.js"],[]),
-
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/draw/DrawToolbar.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/edit/EditToolbar.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Edit.js"],[]),
-		script([type='text/javascript',
-			src="f/scripts/Leaflet.draw-master/src/edit/handler/EditToolbar.Delete.js"],[]),
-
-            %%%%%%End leafletdraw%%%%%%%
-	    link([href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css', rel='stylesheet'],[]),
-             \map_style
-            ],
-	    \map_page
-	).
 
 home_page(_Request):-
 	reply_html_page(
@@ -417,6 +347,12 @@ function openWebSocket() {
          //alert("got circle");
          my_add_circle(stringdata);
       }
+
+      if(messageParsed.type=="rectangle"){
+         //alert("got rectangle");
+         my_add_rectangle(stringdata);
+      }
+
     }
 
   };
@@ -473,6 +409,18 @@ function my_add_circle(data){
     added_circles[my_var.id] = new L.circle([my_var.LatLng[0],my_var.LatLng[1]],rad,{"color":color, "fillOpacity":0.2}).addTo(map);
 
 }
+
+var added_rectangles = {};
+function my_add_rectangle(data){
+
+    my_var = JSON.parse(data);
+    //console.log(data);
+    var color = '#'+my_var.color;
+    var bounds = [[my_var.southWest[0],my_var.southWest[1]],[my_var.northEast[0],my_var.northEast[1]]];
+    added_rectangles[my_var.id] = new L.rectangle(bounds,{"color":color, "fillOpacity":0.2}).addTo(map);
+
+}
+
 
 function get_my_simple_id(){
    // function that querys the websocket server to find out what simple id this client has
@@ -562,12 +510,17 @@ map_script -->
 
                 if (type === 'rectangle'){
                       objectToSend.type = 'rectangle';
-                      objectToSend.latlngs = layer.getLatLngs();
+		      bounds =layer.getBounds();
+		      //console.log(temp["_southWest"]);
+                      objectToSend.southWest = bounds["_southWest"];
+		      objectToSend.northEast = bounds["_northEast"];
                       objectToSend.color =  document.getElementById("color").value;;
                       //objectToSend.fillcolor =  layer.fillcolor();
                       var jsonObjectToSend = JSON.stringify(objectToSend);
                       //alert(jsonObjectToSend);
-		      map.addLayer(layer);
+		      sendChat(jsonObjectToSend);
+
+		     // map.addLayer(layer);
                 }
 
                 if (type === 'polygon'){
@@ -788,21 +741,25 @@ broad_cast_remove_pin(_Room,Id):-
 
 broad_cast_loc_pin(_Room,Id,Lat,Lng,R,G,B,MsgJson):-
 	format(atom(MsgJson),'{"type":"marker_loc","id":"~w", "LatLng":[~w,~w], "rgb":[~w,~w,~w]}',[Id,Lat,Lng,R,G,B]),
-	%format('~w\n',[Msg]),
 	send_message(MsgJson).
 	%hub_broadcast(Room.name, Message).
 
 broad_cast_pin(_Room,Id,Lat,Lng,R,G,B,MsgJson):-
 	format(atom(MsgJson),'{"type":"marker","id":"~w", "LatLng":[~w,~w], "rgb":[~w,~w,~w]}',[Id,Lat,Lng,R,G,B]),
-	%format('~w\n',[Msg]),
 	send_message(MsgJson).
 	%hub_broadcast(Room.name, Message).
 
 broad_cast_circle(_Room,Id,Lat,Lng,Color,Radius,MsgJson):-
 	format(atom(MsgJson),'{"type":"circle","id":"~w", "LatLng":[~w,~w], "radius":~w, "color":"~w"}',[Id,Lat,Lng,Radius,Color]),
-	%format('~w\n',[Msg]),
 	send_message(MsgJson).
 	%hub_broadcast(Room.name, Message).
+
+broad_cast_rectangle(_Room,Id,Bounds,Color,MsgJson):-
+	Bounds = bounds(SwLat,SwLng, NeLat,NeLng),
+	format(atom(MsgJson),'{"type":"rectangle","id":"~w", "southWest":[~w,~w],"northEast":[~w,~w],"color":"~w"}',[Id,SwLat,SwLng,NeLat,NeLng,Color]),
+	send_message(MsgJson).
+	%hub_broadcast(Room.name, Message).
+
 
 
 broad_cast_msg_as_json(_Room,Id,Msg,R,G,B,MsgJson):-
@@ -853,6 +810,23 @@ my_if(M,_Room,_Message,Client):-
 	_{lat:Lat,lng:Lng} :< LatLngJson,!,
         %format("~w~n",[Json]).
 	broad_cast_circle(_Room2,"test_c_one",Lat,Lng,Color,Radius,_MsgJson). %id of broadcast circle is fixed at the moment
+
+
+my_if(M,_Room,_Message,Client):-
+        %trace,
+        string_codes(M,Codes),
+        atom_codes(Atom,Codes),
+	atom_json_dict(Atom,Json,[as(string)]),
+	%trace,
+	%format("~w\n~w\n",[Json,Client]),
+	visitor(Client,Simple_Client,rgb(R,G,B)),
+	_A{type:"rectangle", southWest:SouthWestLatLng,northEast:NorthEastLatLng,color:Color} :< Json,!,
+	_A{lat:SwLat,lng:SwLng} :< SouthWestLatLng,!,
+	_A{lat:NeLat,lng:NeLng} :< NorthEastLatLng,!,
+        %format("~w~n",[Json]).
+	Bounds = bounds(SwLat,SwLng, NeLat,NeLng),
+	broad_cast_rectangle(_Room2,"test_r_one",Bounds,Color,_MsgJson). %id of broadcast rectangle is fixed at the moment
+
 
 
 
