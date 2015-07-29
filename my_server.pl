@@ -353,6 +353,17 @@ function openWebSocket() {
          my_add_rectangle(stringdata);
       }
 
+      if(messageParsed.type=="polyline"){
+         //alert("got polyline");
+         my_add_polyline(stringdata);
+      }
+
+      if(messageParsed.type=="polygon"){
+         //alert("got polygon");
+         my_add_polygon(stringdata);
+      }
+
+
     }
 
   };
@@ -420,6 +431,30 @@ function my_add_rectangle(data){
     added_rectangles[my_var.id] = new L.rectangle(bounds,{"color":color, "fillOpacity":0.2}).addTo(map);
 
 }
+
+var added_polygons ={};
+function my_add_polygon(data){
+
+    my_var = JSON.parse(data);
+    //console.log(data);
+    var color = '#'+my_var.color;
+    var latlngs = my_var.latlngs;
+    added_polygons[my_var.id] = new L.polygon(latlngs,{"color":color, "fillOpacity":0.2}).addTo(map);
+
+}
+
+var added_polylines ={};
+function my_add_polyline(data){
+
+    my_var = JSON.parse(data);
+    //console.log(data);
+    var color = '#'+my_var.color;
+    var latlngs = my_var.latlngs;
+    added_polylines[my_var.id] = new L.polyline(latlngs,{"color":color, "fillOpacity":0.2}).addTo(map);
+
+}
+
+
 
 
 function get_my_simple_id(){
@@ -530,7 +565,9 @@ map_script -->
                       //objectToSend.fillcolor =  layer.fillcolor();
                       var jsonObjectToSend = JSON.stringify(objectToSend);
                       //alert(jsonObjectToSend);
-		      map.addLayer(layer);
+		      sendChat(jsonObjectToSend);
+
+		      //map.addLayer(layer);
                 }
 
                 if (type === 'polyline'){
@@ -540,7 +577,9 @@ map_script -->
                       //objectToSend.fillcolor =  layer.fillcolor();
                       var jsonObjectToSend = JSON.stringify(objectToSend);
                       //alert(jsonObjectToSend);
-                      map.addLayer(layer);
+		      sendChat(jsonObjectToSend);
+
+                      //map.addLayer(layer);
                 }
 
 		// Do whatever else you need to. (save to db, add to map etc)
@@ -760,6 +799,20 @@ broad_cast_rectangle(_Room,Id,Bounds,Color,MsgJson):-
 	send_message(MsgJson).
 	%hub_broadcast(Room.name, Message).
 
+broad_cast_polygon(_Room,Id,LatLngs,Color,MsgJson):-
+	atom_json_dict(LatLngsArray,LatLngs,[as(atom)]),
+	format(atom(MsgJson),'{"type":"polygon","id":"~w", "latlngs":~w,"color":"~w"}',[Id,LatLngsArray,Color]),
+	send_message(MsgJson).
+	%hub_broadcast(Room.name, Message).
+
+broad_cast_polyline(_Room,Id,LatLngs,Color,MsgJson):-
+	atom_json_dict(LatLngsArray,LatLngs,[as(atom)]),
+	format(atom(MsgJson),'{"type":"polyline","id":"~w", "latlngs":~w,"color":"~w"}',[Id,LatLngsArray,Color]),
+	send_message(MsgJson).
+	%hub_broadcast(Room.name, Message).
+
+
+
 
 
 broad_cast_msg_as_json(_Room,Id,Msg,R,G,B,MsgJson):-
@@ -826,6 +879,33 @@ my_if(M,_Room,_Message,Client):-
         %format("~w~n",[Json]).
 	Bounds = bounds(SwLat,SwLng, NeLat,NeLng),
 	broad_cast_rectangle(_Room2,"test_r_one",Bounds,Color,_MsgJson). %id of broadcast rectangle is fixed at the moment
+
+
+my_if(M,_Room,_Message,Client):-
+        %trace,
+        string_codes(M,Codes),
+        atom_codes(Atom,Codes),
+	atom_json_dict(Atom,Json,[as(string)]),
+	%trace,
+	%format("~w\n~w\n",[Json,Client]),
+	visitor(Client,Simple_Client,rgb(R,G,B)),
+	_A{type:"polygon", latlngs:LatLngs,color:Color} :< Json,!,
+        %format("~w~n",[Json]).
+	broad_cast_polygon(_Room2,"test_pg_one",LatLngs,Color,_MsgJson). %id of broadcast polygon is fixed at the moment
+
+my_if(M,_Room,_Message,Client):-
+        %trace,
+        string_codes(M,Codes),
+        atom_codes(Atom,Codes),
+	atom_json_dict(Atom,Json,[as(string)]),
+	%trace,
+	%format("~w\n~w\n",[Json,Client]),
+	visitor(Client,Simple_Client,rgb(R,G,B)),
+	_A{type:"polyline", latlngs:LatLngs,color:Color} :< Json,!,
+        %format("~w~n",[Json]).
+	broad_cast_polyline(_Room2,"test_pl_one",LatLngs,Color,_MsgJson). %id of broadcast polyline is fixed at the moment
+
+
 
 
 
