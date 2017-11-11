@@ -134,7 +134,7 @@ chat_page(_Request) :-
 	    [meta([charset='utf-8']),
 	     title('Map and Chat'),
 	     meta([name='viewport',content='initial-scale=1,maximum-scale=1,user-scalable=no']),
-	     script([type='text/javascript',src='http://d3js.org/d3.v3.min.js'],[]),
+	     script([type='text/javascript',src='https://d3js.org/d3.v3.min.js'],[]),
 	     script([type='text/javascript',
 		    src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'],[]),
              %%%%%color picker%%%%%%%%%%%
