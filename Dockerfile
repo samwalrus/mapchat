@@ -27,4 +27,4 @@ EXPOSE 4000
 
 #CMD ["swipl", "-f", "basic_site.pl", "-g", "server(5000)."] 
 #CMD ["swipl", "basic_site.pl", "--user=daemon", "--no-fork", "--port=$PORT"]
-CMD swipl daemon.pl --no-fork --port=$PORT 
+CMD swipl daemon.pl --https --no-fork --port=$PORT 
