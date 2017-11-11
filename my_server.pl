@@ -27,7 +27,7 @@
     the GNU General Public License.
 */
 
-:- module(chat_server,
+:- module(my_server,
 	  [ server/0,
 	    server/1,				% ?Port
 	    create_chat_room/0
@@ -42,6 +42,7 @@
 :- use_module(library(http/json)).
 :- use_module(library(debug)).
 :- use_module(library(time)).
+:- use_module(library(http/http_unix_daemon)).
 
 :- use_module(hub).
 
@@ -485,7 +486,7 @@ map_script -->
 
 
     //alert(Location);
-    var map = L.mapbox.map('map', 'examples.map-i86nkdio')
+    var map = L.mapbox.map('map', 'mapbox.streets')
         //.setView([51.5, -0.09], 13);
         /*This is for testing adding a basic marker and circle from the cleint
 	var marker = L.marker([51.5, -0.09]).addTo(map);

@@ -14,7 +14,7 @@ for a brief help message.
 :- set_prolog_flag(verbose, silent).
 :- use_module(library(http/http_unix_daemon)).
 :- use_module(library(broadcast)).
-:- use_module(chat).
+:- use_module(my_server).
 
 % http_daemon/0 processes the commandline options, creates the requested
 % daemon setup and starts the HTTP server.   It is not allowed to create
